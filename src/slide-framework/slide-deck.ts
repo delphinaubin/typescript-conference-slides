@@ -1,4 +1,10 @@
-import {Slide} from "./slide";
+import "./monokai.css";
+import "reveal.js/dist/reveal.css";
+import "reveal.js/dist/theme/black.css";
+
+import { Slide } from "./slide";
+import Reveal from "reveal.js";
+import RevealHighlight from "reveal.js/plugin/highlight/highlight";
 
 export class SlideDeck {
   constructor(
@@ -17,6 +23,11 @@ export class SlideDeck {
     rootElement.innerHTML = "";
     this.slides.forEach((slide) => {
       rootElement.append(slide.render());
+    });
+
+    Reveal.initialize({
+      hash: true,
+      plugins: [RevealHighlight],
     });
   }
 }
