@@ -1,3 +1,4 @@
+// @ts-strict-ignore
 import "./style.css";
 import { SlideDeck } from "./slide-framework/slide-deck";
 import { Code } from "./slide-framework/code.block";
