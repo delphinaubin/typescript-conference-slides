@@ -5,6 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "tsc": "tsc",
+    "tsc-strict": "tsc-strict",
+    "update-strict-comments": "update-strict-comments",
     "build": "tsc && vite build",
     "preview": "vite preview"
   },
@@ -12,6 +15,7 @@
     "@types/reveal.js": "^5.0.3",
     "prettier": "^3.2.5",
     "typescript": "^5.2.2",
+    "typescript-strict-plugin": "^2.4.3",
     "vite": "^5.2.0"
   },
   "dependencies": {
