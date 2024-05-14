@@ -3,11 +3,13 @@ export abstract class RenderBlock {
     this.children = children;
   }
 
-  abstract getHtmlElement(): HTMLElement;
+  abstract getHtmlElement(): Promise<HTMLElement> | HTMLElement;
 
-  render(): HTMLElement {
-    const element = this.getHtmlElement();
-    const childrenElements = this.children.map((child) => child.render());
+  async render(): Promise<HTMLElement> {
+    const element = await this.getHtmlElement();
+    const childrenElements = await Promise.all(
+      this.children.map(async (child) => await child.render()),
+    );
     childrenElements.forEach((childElement) => element.append(childElement));
     return element;
   }

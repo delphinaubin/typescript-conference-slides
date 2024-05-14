@@ -12,7 +12,7 @@ export class SlideDeck {
     private readonly htmlElementId: string,
   ) {}
 
-  init() {
+  async init(): Promise<void> {
     const rootElement = document.getElementById(this.htmlElementId);
     if (!rootElement) {
       throw new Error(
@@ -21,11 +21,16 @@ export class SlideDeck {
     }
 
     rootElement.innerHTML = "";
-    this.slides.forEach((slide) => {
-      rootElement.append(slide.render());
-    });
 
-    Reveal.initialize({
+    const htmlElements = await Promise.all(
+      this.slides.map((slide) => {
+        return slide.render();
+      }),
+    );
+
+    rootElement.append(...htmlElements);
+
+    await Reveal.initialize({
       hash: true,
       plugins: [RevealHighlight],
     });

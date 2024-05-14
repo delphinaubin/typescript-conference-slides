@@ -6,30 +6,19 @@ type CodeSingleLine = `${number}` | `${number}-${number}`;
 type CodeLines =
   | CodeSingleLine
   | `${CodeSingleLine},${CodeSingleLine}`
-  | `${CodeSingleLine},${CodeSingleLine},${CodeSingleLine}`
+  | `${CodeSingleLine},${CodeSingleLine},${CodeSingleLine}`;
 
 export type CodeSteps =
   | CodeLines
   | `${CodeLines}|${CodeLines}`
   | `${CodeLines}|${CodeLines}|${CodeLines}`
-  | `${CodeLines}|${CodeLines}|${CodeLines}|${CodeLines}`
+  | `${CodeLines}|${CodeLines}|${CodeLines}|${CodeLines}`;
 
-const CODE_SAMPLE_PUBLIC_DIRECTORY = "code-samples";
-export class Code extends RenderBlock {
+
+export abstract class Code extends RenderBlock {
   private steps: CodeSteps | null = null;
-  static withCode(code: string): Code {
-    return new Code(code);
-  }
 
-  static async fromFile(fileName: string): Promise<Code> {
-    const fileContent = await fetch(
-      `${CODE_SAMPLE_PUBLIC_DIRECTORY}/${fileName}`,
-    );
-    const content = await fileContent.text();
-    return new Code(content);
-  }
-
-  constructor(private readonly code: string) {
+  constructor() {
     super([]);
   }
 
@@ -38,7 +27,10 @@ export class Code extends RenderBlock {
     return this;
   }
 
-  override getHtmlElement(): HTMLElement {
+  protected abstract getCode(): string | Promise<string>;
+
+  override async getHtmlElement(): Promise<HTMLElement> {
+    const codeLines = await this.getCode();
     const preElement = document.createElement("pre");
     const codeElement = document.createElement("code");
     if (this.steps) {
@@ -47,7 +39,7 @@ export class Code extends RenderBlock {
 
     codeElement.setAttribute("data-trim", "true");
     codeElement.setAttribute("data-noescape", "true");
-    codeElement.append(document.createTextNode(this.code));
+    codeElement.append(document.createTextNode(codeLines));
     preElement.append(codeElement);
     return preElement;
   }
