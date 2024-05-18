@@ -60,8 +60,12 @@ const slideDeck = new SlideDeck([summary, ...slides], "slide-container");
 
 slideDeck.init();
 
+// 🙅‍♂️ Bad way
+// function getAllTitleSlidesTitle(slides: Slide[]): string[] {
+//   return (slides.filter(slide => slide instanceof TitleSlide) as TitleSlide[]).map(slide => slide.title);
+// }
+
+// 👍 Good way
 function getAllTitleSlidesTitle(slides: Slide[]): string[] {
-  return (
-    slides.filter((slide) => slide instanceof TitleSlide) as TitleSlide[]
-  ).map((slide) => slide.title);
+  return slides.filter((slide): slide is TitleSlide => slide instanceof TitleSlide).map(slide => slide.title);
 }
