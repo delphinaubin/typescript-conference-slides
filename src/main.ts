@@ -5,6 +5,7 @@ import { Slide } from "./slide-framework/slide.block";
 import { Image } from "./slide-framework/image.block";
 import { TitleSlide } from "./title.slide";
 import { CodeSlide } from "./code.slide";
+import { getSlides } from "./slide-content/render-slides";
 
 function getTitle(): string {
   if (window.innerWidth > 400) {
@@ -29,13 +30,15 @@ const slide4 = new Slide([
   ),
 ]);
 
-const slide5 = new TitleSlide('Title 2', "And more...");
+const slide5 = new TitleSlide("Title 2", "And more...");
 
 const slide6 = new Slide([
   Subtitle.withText("This is the second slide..."),
 ]).withTransition("none-in slide-out");
 
-const slide7 = new TitleSlide('Title 3', "And more...");
+const otherSlides = getSlides();
+
+const slide7 = new TitleSlide("Title 3", "And more...");
 
 const slides = [
   slide1,
@@ -44,18 +47,21 @@ const slides = [
   slide4,
   slide5,
   slide6,
-  slide7
+  slide7,
+  ...otherSlides,
 ];
 
 const summary = new Slide([
   Subtitle.withText("👇 Summary 👇"),
-  ...getAllTitleSlidesTitle(slides).map(s => Subtitle.withText(s)),
+  ...getAllTitleSlidesTitle(slides).map((s) => Subtitle.withText(s)),
 ]);
 
 const slideDeck = new SlideDeck([summary, ...slides], "slide-container");
 
 slideDeck.init();
 
-function getAllTitleSlidesTitle(slides): string[] {
-  return (slides.filter(slide => slide instanceof TitleSlide) as TitleSlide[]).map(slide => slide.title);
+function getAllTitleSlidesTitle(slides: Slide[]): string[] {
+  return (
+    slides.filter((slide) => slide instanceof TitleSlide) as TitleSlide[]
+  ).map((slide) => slide.title);
 }
