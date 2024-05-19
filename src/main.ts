@@ -60,12 +60,39 @@ const slideDeck = new SlideDeck([summary, ...slides], "slide-container");
 
 slideDeck.init();
 
-// 🙅‍♂️ Bad way
+// 🙅‍♂️ Pas bien
 // function getAllTitleSlidesTitle(slides: Slide[]): string[] {
 //   return (slides.filter(slide => slide instanceof TitleSlide) as TitleSlide[]).map(slide => slide.title);
 // }
 
-// 👍 Good way
+// 😮‍💨 Pas mal
 function getAllTitleSlidesTitle(slides: Slide[]): string[] {
-  return slides.filter((slide): slide is TitleSlide => slide instanceof TitleSlide).map(slide => slide.title);
+  return slides.filter(slide => slide instanceof TitleSlide).map(slide => {
+
+    assertsTitleSlide(slide);
+    
+    return slide.title
+  });
+}
+
+// 👍 Bien
+// function getAllTitleSlidesTitle(slides: Slide[]): string[] {
+//   return slides.filter((slide): slide is TitleSlide => slide instanceof TitleSlide).map(slide => slide.title);
+// }
+
+// 🚀 Encore mieux
+// function getAllTitleSlidesTitle(slides: Slide[]): string[] {
+//   return slides.filter(isTitleSlide).map(slide => slide.title);
+// }
+
+// TODO: move it to utils directory
+
+// function isTitleSlide(slide: Slide): slide is TitleSlide {
+//   return slide instanceof TitleSlide;
+// }
+
+function assertsTitleSlide(slide: Slide): asserts slide is TitleSlide {
+  if (!(slide instanceof TitleSlide)) {
+    throw new Error('This slide is not a TitleSlide');
+  }
 }
