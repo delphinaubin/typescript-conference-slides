@@ -4,21 +4,30 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "api:start": "tsx api/index.ts",
     "dev": "vite",
     "tsc": "tsc",
     "tsc-strict": "tsc-strict",
     "update-strict-comments": "update-strict-comments",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "expose-monaco-lib": "ln -s ./node_modules/monaco-editor ./public/libs/monaco-editor"
   },
   "devDependencies": {
+    "@types/axios": "^0.14.0",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
     "@types/reveal.js": "^5.0.3",
     "prettier": "^3.2.5",
-    "typescript": "^5.2.2",
+    "typescript": "5.4.5",
     "typescript-strict-plugin": "^2.4.3",
     "vite": "^5.2.0"
   },
   "dependencies": {
-    "reveal.js": "^5.1.0"
+    "axios": "^1.7.0",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "reveal.js": "^5.1.0",
+    "tsx": "^4.10.5"
   }
 }
