@@ -44,6 +44,7 @@ const slide7 = new TitleSlide("Title 3", "And more...");
 const enumSlide = new CompiledCodeSlide('enum.ts')
 
 const slides = [
+  ...otherSlides,
   enumSlide,
   slide1,
   slide2,
@@ -52,7 +53,6 @@ const slides = [
   slide5,
   slide6,
   slide7,
-  ...otherSlides,
 ];
 
 const summary = new Slide([
@@ -60,12 +60,26 @@ const summary = new Slide([
   ...getAllTitleSlidesTitle(slides).map((s) => Subtitle.withText(s)),
 ]);
 
-const slideDeck = new SlideDeck([summary, ...slides], "slide-container");
+const slideDeck = new SlideDeck([...slides, summary], "slide-container");
 
 slideDeck.init();
 
+// 🙅‍♂️ Pas bien
+// function getAllTitleSlidesTitle(slides: Slide[]): string[] {
+//   return (slides.filter(slide => slide instanceof TitleSlide) as TitleSlide[]).map(slide => slide.title);
+// }
+
+// 👍 Bien
+// function getAllTitleSlidesTitle(slides: Slide[]): string[] {
+//   return slides.filter((slide): slide is TitleSlide => slide instanceof TitleSlide).map(slide => slide.title);
+// }
+
+// 🚀 Encore mieux
 function getAllTitleSlidesTitle(slides: Slide[]): string[] {
-  return (
-    slides.filter((slide) => slide instanceof TitleSlide) as TitleSlide[]
-  ).map((slide) => slide.title);
+  return slides.filter(isTitleSlide).map(slide => slide.title);
+}
+
+// TODO: move it to utils directory
+function isTitleSlide(slide: Slide): slide is TitleSlide {
+  return slide instanceof TitleSlide;
 }
