@@ -1,31 +1,21 @@
 import axios from "axios";
 
-interface CompiledCode {
+interface Compiled {
   compiled: { outputText: string; diagnostics: unknown[] };
 }
 
-interface NotCompiledCode {
+interface NotCompiled {
   code: string;
 }
 
-export async function fetchCode(
-  fileName: string,
-  outputLanguage: "js",
-): Promise<CompiledCode>;
-export async function fetchCode(
-  fileName: string,
-  outputLanguage: "ts",
-): Promise<NotCompiledCode>;
-export async function fetchCode(
-  fileName: string,
-  outputLanguage: "js" | "ts",
-): Promise<CompiledCode | NotCompiledCode> {
-  const url = new URL("http://localhost:3000/code");
-  url.searchParams.set("fileName", fileName);
-  url.searchParams.set("outputLanguage", outputLanguage);
+type Code = Compiled | NotCompiled;
 
-  const response = await axios.get<CompiledCode | NotCompiledCode>(
-    url.toString(),
-  );
+export async function fetchCode(file: string, language: "js"): Promise<Compiled>;
+export async function fetchCode(file: string, language: "ts"): Promise<NotCompiled>;
+export async function fetchCode(file: string, output: "js" | "ts"): Promise<Code> {
+  const url = new URL("http://localhost:3000/code");
+  url.searchParams.set("fileName", file);
+  url.searchParams.set("outputLanguage", output);
+  const response = await axios.get<Compiled | NotCompiled>(url.toString());
   return response.data;
 }
