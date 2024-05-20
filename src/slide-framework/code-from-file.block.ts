@@ -1,6 +1,5 @@
 import { Code } from "./code.block";
-
-const CODE_SAMPLE_PUBLIC_DIRECTORY = "code-samples";
+import { fetchCode } from "../client/code.client";
 
 export class CodeFromFile extends Code {
   static fromFile(fileName: string): CodeFromFile {
@@ -11,10 +10,8 @@ export class CodeFromFile extends Code {
     super();
   }
 
-  protected override async getCode() {
-    const fileContent = await fetch(
-      `${CODE_SAMPLE_PUBLIC_DIRECTORY}/${this.fileName}`,
-    );
-    return await fileContent.text();
+  override async getCode() {
+    const fileContent = await fetchCode(this.fileName, "ts");
+    return fileContent.code;
   }
 }

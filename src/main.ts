@@ -6,6 +6,7 @@ import { Image } from "./slide-framework/image.block";
 import { TitleSlide } from "./title.slide";
 import { CodeSlide } from "./code.slide";
 import { getSlides } from "./slide-content/render-slides";
+import {CompiledCodeSlide} from "./compiled-code.slide";
 
 function getTitle(): string {
   if (window.innerWidth > 400) {
@@ -40,8 +41,11 @@ const otherSlides = getSlides();
 
 const slide7 = new TitleSlide("Title 3", "And more...");
 
+const enumSlide = new CompiledCodeSlide('enum.ts')
+
 const slides = [
   ...otherSlides,
+  enumSlide,
   slide1,
   slide2,
   slide3,
