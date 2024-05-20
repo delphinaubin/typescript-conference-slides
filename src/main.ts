@@ -41,6 +41,7 @@ const otherSlides = getSlides();
 const slide7 = new TitleSlide("Title 3", "And more...");
 
 const slides = [
+  ...otherSlides,
   slide1,
   slide2,
   slide3,
@@ -48,7 +49,6 @@ const slides = [
   slide5,
   slide6,
   slide7,
-  ...otherSlides,
 ];
 
 const summary = new Slide([
@@ -56,7 +56,7 @@ const summary = new Slide([
   ...getAllTitleSlidesTitle(slides).map((s) => Subtitle.withText(s)),
 ]);
 
-const slideDeck = new SlideDeck([summary, ...slides], "slide-container");
+const slideDeck = new SlideDeck([...slides, summary], "slide-container");
 
 slideDeck.init();
 
@@ -64,7 +64,6 @@ slideDeck.init();
 // function getAllTitleSlidesTitle(slides: Slide[]): string[] {
 //   return (slides.filter(slide => slide instanceof TitleSlide) as TitleSlide[]).map(slide => slide.title);
 // }
-
 
 // 👍 Bien
 // function getAllTitleSlidesTitle(slides: Slide[]): string[] {
